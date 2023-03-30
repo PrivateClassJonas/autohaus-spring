@@ -25,7 +25,10 @@ public class AutohausContainerTest {
     @Autowired
     private AutohausService autohausService;
     @Container
-    public static MySQLContainer database = (MySQLContainer) new MySQLContainer("mysql:latest")
+    public static MySQLContainer database = (MySQLContainer) new MySQLContainer("mysql:5.5")
+            .withPassword("secret")
+            .withUsername("root")
+            .withInitScript("init.sql")
             .withDatabaseName("autohausdb_test");
 
 
@@ -33,9 +36,7 @@ public class AutohausContainerTest {
     @BeforeAll
     public static void setUpDockerContainer(){
         database.withReuse(true);
-        database.withInitScript("src/test/resources/init.sql");
         database.start();
-
     }
 
     @DynamicPropertySource
